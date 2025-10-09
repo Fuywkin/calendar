@@ -10,6 +10,13 @@ declare global {
     buying: string;
     selling: string;
   }
+
+  interface SCHOOL_DATES_PROPS {
+    id: string;
+    baslangic: string;
+    bitis: string;
+    aciklama: string;
+  }
 }
 
 export {};

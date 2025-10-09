@@ -17,6 +17,7 @@ import { motion, Variants } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useCurrencyData } from "./hooks/useCurrency";
 import { usePublicHolidayData } from "./hooks/usePublicHoliday";
+import { useSchoolDates } from "./hooks/useSchoolDates";
 
 const { Text } = Typography;
 const { useToken } = theme;
@@ -38,17 +39,28 @@ const Home = () => {
   const { holiday, getHolidayData, getNextHoliday } =
     usePublicHolidayData<PUBLIC_HOLIDAY_PROPS>();
 
+  const { schoolDate, getSchoolDateData, getNextSchoolDate } = useSchoolDates();
+
   useEffect(() => {
     const fetchAll = async () => {
-      await Promise.all([getUSD(), getEUR(), getHolidayData()]);
+      await Promise.all([
+        getUSD(),
+        getEUR(),
+        getHolidayData(),
+        getSchoolDateData(),
+      ]);
       setLoading(false);
     };
     fetchAll();
-  }, [getUSD, getEUR, getHolidayData]);
+  }, [getUSD, getEUR, getHolidayData, getSchoolDateData]);
 
   const nextHolidayResult = getNextHoliday(holiday);
   const nextHoliday = nextHolidayResult?.nextHoliday;
   const daysLeft = nextHolidayResult?.daysLeft;
+
+  const nextSchoolDateResult = getNextSchoolDate(schoolDate);
+  const nextSchoolDate = nextSchoolDateResult?.nextSchoolDate;
+  const daysLeftSchoolDate = nextSchoolDateResult?.daysLeft;
 
   if (loading) {
     return (
@@ -71,9 +83,9 @@ const Home = () => {
     >
       <Divider />
 
-      <Row gutter={[24, 24]}>
-        {/* Resmi Tatiller */}
-        <Col xs={24} md={12} lg={12}>
+      <Row gutter={[24, 24]} justify="start">
+        {/* Türkiye Resmi Tatilleri */}
+        <Col xs={24} md={12} lg={8}>
           <motion.div
             variants={fadeIn as Variants}
             initial="hidden"
@@ -94,6 +106,7 @@ const Home = () => {
               style={{
                 borderRadius: "16px",
                 boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+                height: "100%",
               }}
             >
               <Statistic
@@ -116,19 +129,114 @@ const Home = () => {
                   .filter((h) => h.date > Date.now())
                   .sort((a, b) => a.date - b.date)
                   .slice(0, 10)}
-                renderItem={(item: PUBLIC_HOLIDAY_PROPS) => (
-                  <List.Item>
-                    <Text strong>{item.localeDateString}</Text> –{" "}
-                    <Text>{item.title}</Text>
-                  </List.Item>
-                )}
+                renderItem={(item: PUBLIC_HOLIDAY_PROPS) => {
+                  const today = new Date();
+                  const itemDate = new Date(item.date);
+                  const isToday =
+                    itemDate.getFullYear() === today.getFullYear() &&
+                    itemDate.getMonth() === today.getMonth() &&
+                    itemDate.getDate() === today.getDate();
+
+                  const isNext =
+                    nextHoliday &&
+                    new Date(nextHoliday.date).getTime() === itemDate.getTime();
+
+                  let textColor = undefined;
+                  if (isToday) textColor = "#4caf50";
+                  else if (isNext) textColor = "#ff9800";
+                  else textColor = token.colorText;
+
+                  return (
+                    <List.Item>
+                      <Text strong style={{ color: textColor }}>
+                        {item.localeDateString}
+                      </Text>{" "}
+                      – <Text style={{ color: textColor }}>{item.title}</Text>
+                    </List.Item>
+                  );
+                }}
               />
             </Card>
           </motion.div>
         </Col>
 
-        {/* Döviz Kurları */}
-        <Col xs={24} md={12} lg={12}>
+        {/* Okul Tarihleri */}
+        <Col xs={24} md={12} lg={8}>
+          <motion.div
+            variants={fadeIn as Variants}
+            initial="hidden"
+            animate="visible"
+            whileHover={{ scale: 1.003 }}
+            transition={{ duration: 0.4 }}
+          >
+            <Card
+              title={
+                <span>
+                  <CalendarOutlined
+                    style={{ marginRight: 8, color: "#ff9800" }}
+                  />
+                  Okul Tarihleri
+                </span>
+              }
+              hoverable
+              style={{
+                borderRadius: "16px",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+                height: "100%",
+              }}
+            >
+              <Statistic
+                title="En Yakın Tatil"
+                value={nextSchoolDate?.aciklama || "-"}
+                valueStyle={{ color: token.colorPrimary }}
+              />
+              <div style={{ marginTop: 8 }}>
+                <Tag color="orange">
+                  Tarih: {nextSchoolDate?.baslangic || "-"}
+                </Tag>
+                <Tag color="blue">Kalan gün: {daysLeftSchoolDate ?? "-"}</Tag>
+              </div>
+
+              <Divider />
+
+              <List
+                size="small"
+                dataSource={schoolDate}
+                renderItem={(item: SCHOOL_DATES_PROPS) => {
+                  const today = new Date();
+                  const itemDate = new Date(item.baslangic);
+                  const isToday =
+                    itemDate.getFullYear() === today.getFullYear() &&
+                    itemDate.getMonth() === today.getMonth() &&
+                    itemDate.getDate() === today.getDate();
+
+                  const isNext =
+                    nextSchoolDate &&
+                    new Date(nextSchoolDate.baslangic).getTime() ===
+                      itemDate.getTime();
+
+                  let textColor = undefined;
+                  if (isToday) textColor = "#4caf50";
+                  else if (isNext) textColor = "#ff9800";
+                  else textColor = token.colorText;
+
+                  return (
+                    <List.Item>
+                      <Text strong style={{ color: textColor }}>
+                        {item.baslangic}
+                      </Text>{" "}
+                      –{" "}
+                      <Text style={{ color: textColor }}>{item.aciklama}</Text>
+                    </List.Item>
+                  );
+                }}
+              />
+            </Card>
+          </motion.div>
+        </Col>
+
+        {/* Dolar & Euro Kuru */}
+        <Col xs={24} md={12} lg={8}>
           <motion.div
             variants={fadeIn as Variants}
             initial="hidden"
@@ -149,6 +257,7 @@ const Home = () => {
               style={{
                 borderRadius: "16px",
                 boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+                height: "100%",
               }}
             >
               <List
