@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import { useCurrencyData } from "./hooks/useCurrency";
 import { usePublicHolidayData } from "./hooks/usePublicHoliday";
 import { useSchoolDates } from "./hooks/useSchoolDates";
+import GitHubButton from "react-github-btn";
 
 const { Text } = Typography;
 const { useToken } = theme;
@@ -81,6 +82,17 @@ const Home = () => {
         minHeight: "100vh",
       }}
     >
+      <div className="absolute top-0 left-0">
+        <GitHubButton
+          href="https://github.com/Fuywkin/time-tracker"
+          data-color-scheme="no-preference: light; light: light; dark: dark;"
+          data-size="small"
+          aria-label="Use this GitHub Action Fuywkin/time-tracker on GitHub"
+        >
+          View on GitHub
+        </GitHubButton>
+      </div>
+
       <Divider />
 
       <Row gutter={[24, 24]} justify="start">

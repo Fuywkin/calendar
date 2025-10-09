@@ -1,29 +1,9 @@
-## Languages / Diller
-
-<div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
-  <a href="README_EN.md" style="text-decoration: none;">
-    <span style="
-      background-color: #007bff;
-      color: white;
-      padding: 0.25rem 0.6rem;
-      border-radius: 0.5rem;
-      font-size: 0.875rem;
-      font-weight: 500;
-      ">
-      English
-    </span>
+<div style="display: flex; gap: 8px;">
+  <a href="README.md">
+    <img src="https://img.shields.io/badge/Türkçe-28a745?style=for-the-badge&logo=github" alt="Türkçe" />
   </a>
-  <a href="README.md" style="text-decoration: none;">
-    <span style="
-      background-color: #28a745;
-      color: white;
-      padding: 0.25rem 0.6rem;
-      border-radius: 0.5rem;
-      font-size: 0.875rem;
-      font-weight: 500;
-      ">
-      Türkçe
-    </span>
+  <a href="README_EN.md">
+    <img src="https://img.shields.io/badge/English-007bff?style=for-the-badge&logo=github" alt="English" />
   </a>
 </div>
 
