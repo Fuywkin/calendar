@@ -27,30 +27,30 @@
   </a>
 </div>
 
-### Kurulum
+### Installation
 
-1. Depoyu klonlayın:
+1. Clone the repository:
 
 ```bash
 git clone https://github.com/Fuywkin/time-tracker.git
 ```
 
-2. Proje dizinine gidin:
+2. Navigate to the project directory:
 
 ```bash
 cd time-tracker
 ```
 
-3. Gerekli paketleri yükleyin:
+3. Install the required packages:
 
 ```bash
 npm install
 ```
 
-4. Uygulamayı başlatın:
+4. Start the application:
 
 ```bash
 npm run dev
 ```
 
-5. Tarayıcınızdan `http://localhost:3000` adresine gidin.
+5. Open your browser and go to `http://localhost:3000`.
