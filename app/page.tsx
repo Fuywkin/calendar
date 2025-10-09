@@ -187,7 +187,7 @@ const Home = () => {
                   <CalendarOutlined
                     style={{ marginRight: 8, color: "#ff9800" }}
                   />
-                  Okul Tarihleri
+                  Okul Tatilleri
                 </span>
               }
               hoverable
