@@ -1,14 +1,33 @@
 "use client";
 
-import { Card, Col, Divider, List, Row, Spin, Typography } from "antd";
-import { motion } from "framer-motion";
+import { CalendarOutlined, DollarOutlined } from "@ant-design/icons";
+import {
+  Card,
+  Col,
+  Divider,
+  List,
+  Row,
+  Spin,
+  Statistic,
+  Tag,
+  theme,
+  Typography,
+} from "antd";
+import { motion, Variants } from "framer-motion";
+import { useEffect, useState } from "react";
 import { useCurrencyData } from "./hooks/useCurrency";
 import { usePublicHolidayData } from "./hooks/usePublicHoliday";
-import { useEffect, useState } from "react";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
+const { useToken } = theme;
+
+const fadeIn = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
+};
 
 const Home = () => {
+  const { token } = useToken();
   const [loading, setLoading] = useState(true);
 
   const { currency: USD, getCurrencyData: getUSD } =
@@ -33,98 +52,131 @@ const Home = () => {
 
   if (loading) {
     return (
-      <Spin size="large" style={{ display: "block", margin: "100px auto" }} />
+      <Spin
+        size="large"
+        style={{ display: "block", margin: "120px auto" }}
+        fullscreen
+        tip="Veriler yükleniyor..."
+      />
     );
   }
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <Title level={2}>Önemli Tarihler & Kurlar</Title>
+    <div
+      style={{
+        padding: "2rem",
+        backgroundColor: "#f9fafc",
+        minHeight: "100vh",
+      }}
+    >
       <Divider />
 
       <Row gutter={[24, 24]}>
         {/* Resmi Tatiller */}
         <Col xs={24} md={12} lg={12}>
-          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-            <Card title="Türkiye Resmi Tatilleri" variant="outlined" hoverable>
-              <Text>
-                En yakın tatil: <strong>{nextHoliday?.title}</strong>
-              </Text>
-              <br />
-              <Text>
-                Tarih: <strong>{nextHoliday?.localeDateString}</strong>
-              </Text>
-              <br />
-              <Text>
-                Kalan gün: <strong>{daysLeft}</strong>
-              </Text>
+          <motion.div
+            variants={fadeIn as Variants}
+            initial="hidden"
+            animate="visible"
+            whileHover={{ scale: 1.003 }}
+            transition={{ duration: 0.4 }}
+          >
+            <Card
+              title={
+                <span>
+                  <CalendarOutlined
+                    style={{ marginRight: 8, color: "#ff9800" }}
+                  />
+                  Türkiye Resmi Tatilleri
+                </span>
+              }
+              hoverable
+              style={{
+                borderRadius: "16px",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+              }}
+            >
+              <Statistic
+                title="En Yakın Tatil"
+                value={nextHoliday?.title || "-"}
+                valueStyle={{ color: token.colorPrimary }}
+              />
+              <div style={{ marginTop: 8 }}>
+                <Tag color="orange">
+                  Tarih: {nextHoliday?.localeDateString || "-"}
+                </Tag>
+                <Tag color="blue">Kalan gün: {daysLeft ?? "-"}</Tag>
+              </div>
+
+              <Divider />
+
               <List
-                style={{ marginTop: "1rem" }}
+                size="small"
                 dataSource={holiday
                   .filter((h) => h.date > Date.now())
                   .sort((a, b) => a.date - b.date)
                   .slice(0, 10)}
                 renderItem={(item: PUBLIC_HOLIDAY_PROPS) => (
                   <List.Item>
-                    <Text strong>{item.localeDateString}</Text> - {item.title}
+                    <Text strong>{item.localeDateString}</Text> –{" "}
+                    <Text>{item.title}</Text>
                   </List.Item>
                 )}
               />
             </Card>
           </motion.div>
         </Col>
-        {/* Dolar ve Euro Kuru */}
+
+        {/* Döviz Kurları */}
         <Col xs={24} md={12} lg={12}>
-          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-            <Card title="Dolar & Euro Kuru" variant="outlined" hoverable>
+          <motion.div
+            variants={fadeIn as Variants}
+            initial="hidden"
+            animate="visible"
+            whileHover={{ scale: 1.003 }}
+            transition={{ duration: 0.4 }}
+          >
+            <Card
+              title={
+                <span>
+                  <DollarOutlined
+                    style={{ marginRight: 8, color: "#4caf50" }}
+                  />
+                  Dolar & Euro Kuru
+                </span>
+              }
+              hoverable
+              style={{
+                borderRadius: "16px",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+              }}
+            >
               <List
+                size="small"
                 dataSource={[...USD, ...EUR]}
                 renderItem={(item: CURRENCY_RATES_PROPS) => (
                   <List.Item>
-                    <Text strong>{item.name}</Text> - Alış: {item.buying} |
-                    Satış: {item.selling}
+                    <Tag
+                      color={
+                        item.name.includes("USD")
+                          ? "green"
+                          : item.name.includes("EUR")
+                          ? "blue"
+                          : "default"
+                      }
+                    >
+                      {item.name}
+                    </Tag>
+                    <Text>
+                      Alış: <strong>{item.buying}</strong> | Satış:{" "}
+                      <strong>{item.selling}</strong>
+                    </Text>
                   </List.Item>
                 )}
               />
             </Card>
           </motion.div>
         </Col>
-
-        {/* Okullar & Sınav Tarihleri */}
-        {/* <Col xs={24} md={12} lg={12}>
-          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-            <Card
-              title="Okullar ve Sınav Tarihleri"
-              variant="outlined"
-              hoverable
-            >
-              <List
-                dataSource={exams}
-                renderItem={(item) => (
-                  <List.Item>
-                    <Text strong>{item.date}</Text> - {item.name}
-                  </List.Item>
-                )}
-              />
-            </Card>
-          </motion.div>
-        </Col> */}
-
-        {/* Ekstra Önemli Tarihler */}
-        {/* <Col xs={24} md={12} lg={12}>
-          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-            <Card title="Ekstra Önemli Tarihler" variant="outlined" hoverable>
-              <List
-                dataSource={extraEvents}
-                renderItem={(item) => (
-                  <List.Item>
-                    <Text strong>{item.date}</Text> - {item.name}
-                  </List.Item>
-                )}
-              />
-            </Card>
-          </motion.div>
-        </Col> */}
       </Row>
     </div>
   );
