@@ -1,6 +1,10 @@
 "use client";
 
-import { CalendarOutlined, DollarOutlined } from "@ant-design/icons";
+import {
+  CalendarOutlined,
+  ClockCircleOutlined,
+  DollarOutlined,
+} from "@ant-design/icons";
 import {
   Card,
   Col,
@@ -15,10 +19,11 @@ import {
 } from "antd";
 import { motion, Variants } from "framer-motion";
 import { useEffect, useState } from "react";
+import GitHubButton from "react-github-btn";
+import Clock from "./components/Clock";
 import { useCurrencyData } from "./hooks/useCurrency";
 import { usePublicHolidayData } from "./hooks/usePublicHoliday";
 import { useSchoolDates } from "./hooks/useSchoolDates";
-import GitHubButton from "react-github-btn";
 
 const { Text } = Typography;
 const { useToken } = theme;
@@ -247,7 +252,7 @@ const Home = () => {
           </motion.div>
         </Col>
 
-        {/* Dolar & Euro Kuru */}
+        {/* Dolar - Euro Kuru & Dijital Saat */}
         <Col xs={24} md={12} lg={8}>
           <motion.div
             variants={fadeIn as Variants}
@@ -256,6 +261,7 @@ const Home = () => {
             whileHover={{ scale: 1.003 }}
             transition={{ duration: 0.4 }}
           >
+            {/* Dolar & Euro Kuru */}
             <Card
               title={
                 <span>
@@ -295,6 +301,40 @@ const Home = () => {
                   </List.Item>
                 )}
               />
+            </Card>
+
+            {/* Dijital Saat */}
+            <Card
+              title={
+                <span>
+                  <ClockCircleOutlined
+                    style={{ marginRight: 8, color: "#4caf50" }}
+                  />
+                  Dijital Saat
+                </span>
+              }
+              hoverable
+              style={{
+                marginTop: 16,
+                borderRadius: "16px",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+                height: "100%",
+              }}
+              extra={
+                <span
+                  style={{
+                    fontWeight: "300",
+                    fontSize: "13px",
+                    padding: "6px 14px",
+                    borderRadius: "10px",
+                    cursor: "default",
+                  }}
+                >
+                  Türkiye Saati (GMT+3)
+                </span>
+              }
+            >
+              <Clock />
             </Card>
           </motion.div>
         </Col>
