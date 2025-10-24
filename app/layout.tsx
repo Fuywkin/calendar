@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Time Tracker",
-  description: "Önemli zamanların sayacını yapan uygulama",
+  title: "Calendar",
+  description: "Zarttiri Zort",
 };
 
 export default function RootLayout({

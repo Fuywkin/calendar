@@ -69,10 +69,10 @@ const Home = () => {
     >
       <div className="absolute top-0 left-0">
         <GitHubButton
-          href="https://github.com/Fuywkin/time-tracker"
+          href="https://github.com/Fuywkin/calendar"
           data-color-scheme="no-preference: light; light: light; dark: dark;"
           data-size="small"
-          aria-label="Use this GitHub Action Fuywkin/time-tracker on GitHub"
+          aria-label="Use this GitHub Action Fuywkin/calendar on GitHub"
         >
           View on GitHub
         </GitHubButton>
