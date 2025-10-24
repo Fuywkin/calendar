@@ -1,8 +1,5 @@
 import { NextResponse } from "next/server";
 
-// ÖRNEK FETCH
-// http://localhost:3000/api/getPublicHoliday
-
 export async function GET() {
   try {
     const res = await fetch(

@@ -1,9 +1,6 @@
 import { useCallback, useState } from "react";
 import { CustomFetchData } from "../lib/custom-fetch";
 
-// EXAMPLE
-// usePublicHolidayData<PUBLIC_HOLIDAY_PROPS>()
-
 export function usePublicHolidayData<T>() {
   const [holiday, setHoliday] = useState<T[]>([]);
 

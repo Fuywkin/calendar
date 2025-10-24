@@ -1,9 +1,6 @@
 import { XMLParser } from "fast-xml-parser";
 import { NextResponse } from "next/server";
 
-// ÖRNEK FETCH
-// http://localhost:3000/api/getCurrencyRates?id=EUR
-
 const CURRENCY_URL = "https://www.tcmb.gov.tr/kurlar/today.xml";
 
 const CURRENCY_MAP: Record<string, number> = {

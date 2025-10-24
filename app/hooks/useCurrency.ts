@@ -1,9 +1,6 @@
 import { useCallback, useState } from "react";
 import { CustomFetchData } from "../lib/custom-fetch";
 
-// EXAMPLE
-// useCurrencyData<CURRENCY_RATES_PROPS>({ queryType: "USD"})
-
 export function useCurrencyData<T>({ queryType }: { queryType: string }) {
   const [currency, setCurrency] = useState<T[]>([]);
 
