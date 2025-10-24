@@ -12,13 +12,13 @@
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/Fuywkin/time-tracker.git
+git clone https://github.com/Fuywkin/calendar.git
 ```
 
 2. Navigate to the project directory:
 
 ```bash
-cd time-tracker
+cd calendar
 ```
 
 3. Install the required packages:
