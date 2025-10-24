@@ -12,13 +12,13 @@
 1. Depoyu klonlayın:
 
 ```bash
-git clone https://github.com/Fuywkin/time-tracker.git
+git clone https://github.com/Fuywkin/calendar.git
 ```
 
 2. Proje dizinine gidin:
 
 ```bash
-cd time-tracker
+cd calendar
 ```
 
 3. Gerekli paketleri yükleyin:
